@@ -122,7 +122,11 @@
                         <h2 class="heading-2 font-weight:normal color:base-5" th:text="${m.engName}">Cafe Latte</h2>
                         <div class="price-block d:flex align-items:flex-end"><span class="font-weight:bold" th:text="${#numbers.formatInteger(m.price,3,'COMMA') + '원'}">4500</span><span class="soldout-msg ml:auto mr:auto md:d:none">SOLD OUT</span></div>
                         <div class="img-block">
-                            <a href="detail.html?id=1" th:href="@{/menu/detail(id=${m.id})}"><img src="/image/menu/8.jpg"></a>
+                            <a href="detail.html?id=1" th:href="@{/menu/detail(id=${m.id})}">
+                                <img 
+                                    src="/image/menu/8.jpg"
+                                    th:src="@{'/image/menu/'+${m.img}}">
+                            </a>
                         </div>
                         <div class="like-block d:flex justify-content:flex-end">
                             <a class="icon icon-heart-fill icon-color:base-4" href="">좋아요</a>

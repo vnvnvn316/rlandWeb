@@ -21,7 +21,7 @@ public interface MenuService {
     
     Menu getById(Long id);
 
-    Menu add(Menu menu);
+    int add(Menu menu);
 
     
 

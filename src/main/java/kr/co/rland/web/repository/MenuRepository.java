@@ -16,9 +16,10 @@ public interface MenuRepository {
     List<Menu> findAllByName(String name);
     void deleteById(long id);
 
-    void save(Menu menu);
-    void update(Menu menu);
-    void delete(long id);
+    int save(Menu menu);
+    int update(Menu menu);
+    int delete(long id);
+    
     void addMenu(Menu menu);
 
     int count(String query, Long categoryId);

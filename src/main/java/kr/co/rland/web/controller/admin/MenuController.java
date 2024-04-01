@@ -47,17 +47,15 @@ public class MenuController {
         , Principal principal
     ) throws IllegalStateException, IOException {
         
-        menu.setRegMemberId(160L);
-        menu.setCategoryId(1L);
 
-        Menu savedMenu = service.add(menu);
+        String fileName="";
 
         //파일저장
-        if(savedMenu!=null && imgFile!= null && !imgFile.isEmpty())
+        if(imgFile!= null && !imgFile.isEmpty())
         {
-            String fileName = imgFile.getOriginalFilename();
+            fileName = imgFile.getOriginalFilename();
 
-            String path = "/upload";
+            String path = "/image/menu";
             String realPath = request
                                 .getServletContext()
                                 .getRealPath(path);
@@ -75,9 +73,14 @@ public class MenuController {
         
         }
         
-        System.out.println(menu);
+        menu.setRegMemberId(160L);
+        menu.setCategoryId(1L);
+        menu.setImg(fileName);
 
-     
+        service.add(menu);
+        System.out.println("imgFile"+imgFile);
+        
+        System.out.println(menu);
 
         return "redirect:list";
     }
