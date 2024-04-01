@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rland.web.repository.MenuRepository">
+	<!-- <resultMap id="menuMap" type="kr.co.rland.web.entity.Menu">
+	  <result property="korName" column="kor_name"/>
+	  <result property="engName" column="eng_name"/>
+	  <result property="regDate" column="reg_date"/>
+	</resultMap> -->
+	
+  <select id="findAll" resultType="MenuView">
+		select 
+			*
+		from menu_view
+		<where>
+			<if test="categoryId!=null">
+				category_id = #{categoryId}
+			</if>
+			<if test="query!=null">
+				and kor_name like '%${query}%'
+			</if>
+		</where>
+		LIMIT #{offset},#{size}
+
+  </select>
+  
+  <select id="count" resultType="Integer">
+    	select
+    		count(*)
+		from menu
+		<where>
+			<if test="categoryId!=null">
+				category_id = #{categoryId}
+			</if>
+			<if test="query!=null">
+				and kor_name like '%${query}%'
+			</if>
+		</where>
+    	
+  </select>
+
+  <select id="findById" resultType="Menu">
+    	select
+    		*
+    	from menu where id = #{id}
+  </select>
+
+	<insert id="addMenu" parameterType="Menu">
+		INSERT INTO menu(kor_name,eng_name,price)
+		values(
+			#{korName},
+			#{engName},
+			#{price}
+			)
+	</insert>
+
+	<delete id="deleteById" parameterType="Menu">
+		delete from menu where id=#{id}
+	</delete>
+
+	<insert id="save" parameterType="Menu">
+		INSERT INTO menu(
+					kor_name
+					, eng_name
+					, price
+					, img
+					, category_id
+					,reg_member_id
+					)
+					VALUES(
+						#{korName}
+						,#{engName}
+						,#{price}
+						,#{img}
+						,#{categoryId}
+						,#{regMemberId}
+					)
+	</insert>
+</mapper>

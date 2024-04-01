@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .n-container{
+            --container-max-width: 900px;
+        }
+
+        input:invalid {
+            border-color: red;
+        }
+
+        .n-form>div::after {
+            content:"오류가 있습니다.";
+            display: inline-block;
+            width: 0px;
+            height: 50px;
+            overflow: hidden;
+
+            transition : width 1s;
+        }
+
+        .n-form>div:has(input:invalid)::after {
+            /* opacity: 1; */
+            width: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<main
+    layout:fragment="main"
+    class="n.container m:auto"
+>
+    <header class="d:flex ai:center jc:space-between p:3">
+        <h1 class="n-font n-font:title">☕메뉴 목록</h1>
+        <div>
+            <button class="n-btn ">취소</button>
+        </div>
+    </header>
+    <section class="w:10 p:2">
+        <form action="reg" method="post" 
+                novalidate
+                enctype="multipart/form-data"
+                class="n-form n-field-label-position:top">
+        <h1 class="fs:3 fw:3">✏️ 메뉴 등록 폼</h1>
+            <div>
+                <label>
+                    <span>한글명</span>
+                    <input type="text" 
+                        name="korName"
+                        autocomplete="off"
+                        autofocus
+                        list="menu-list" 
+                        required minlength="3">
+                    <datalist id="menu-list">
+                        <option>아메리카노</option>
+                        <option>디카페인아메리카노</option>
+                        <option>카페라떼</option>
+                        <option>딸기라떼</option>
+                        <option>카페모카</option>
+                    </datalist>
+                </label>
+            </div>
+            <br>
+            <div>
+                <label>
+                    <span>영어명</span>
+                    <input type="text" name="engName" value="ameri">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>이미지</span>
+                    <input class="" name="img-file" type="file">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <span>가격</span>
+                    <input type="number" name="price" value="20000" placeholder="입력">
+                </label>
+            </div>
+            <br><br>
+            <div>
+                <button formnovalidate class="n-btn">제출</button>
+            </div>
+        </form>
+    </section>
+
+</main>
+</body>
+</html>
