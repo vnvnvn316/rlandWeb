@@ -33,7 +33,24 @@
             width: 100px;
         }
 
+        .preview-pannel {
+            overflow: hidden;
+        }
+
+        .preview-pannel img {
+            height: 100px;
+            
+            transform: translateX(-200px);
+            transition: transform 1s;
+
+        }
+
+        .preview-pannel img.slide-in {
+            transform: translateX(0px);
+        }
+
     </style>
+    <script src="/js/admin/reg.js" defer></script>
 </head>
 <body>
 <main
@@ -46,7 +63,7 @@
             <button class="n-btn ">취소</button>
         </div>
     </header>
-    <section class="w:10 p:2">
+    <section id="reg-form" class="w:10 p:2">
         <form action="reg" method="post" 
                 novalidate
                 enctype="multipart/form-data"
@@ -78,10 +95,12 @@
                 </label>
             </div>
             <div>
-                <label>
+                <label class="img-label">
                     <span>이미지</span>
-                    <input class="" name="img-file" type="file">
+                    <input class="d:none img-input" name="img-file" type="file" multiple>
                 </label>
+            </div>
+            <div class="preview-pannel fl-dir:row">
             </div>
             <div>
                 <label>
