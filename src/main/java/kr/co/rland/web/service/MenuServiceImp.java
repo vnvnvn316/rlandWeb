@@ -75,7 +75,7 @@ public class MenuServiceImp implements MenuService {
     }
 
 
-    public int add(Menu menu){
+    public int add(Menu menu, List<String> fileNames){
         int affected = repository.save(menu);
         return affected;
     }

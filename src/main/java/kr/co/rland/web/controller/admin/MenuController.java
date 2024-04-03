@@ -42,48 +42,58 @@ public class MenuController {
     @PostMapping("reg")
     public String reg(
         Menu menu
-        ,@RequestParam("img-file") MultipartFile imgFile
+        ,@RequestParam("img-file") List<MultipartFile> imgFiles
         , HttpServletRequest request
         , Principal principal
     ) throws IllegalStateException, IOException {
         
 
-        String fileName="";
+        List<String> fileNames = new ArrayList<>();
 
-        //파일저장
-        if(imgFile!= null && !imgFile.isEmpty())
+        for(MultipartFile imgFile : imgFiles)
         {
-            fileName = imgFile.getOriginalFilename();
+            String fileName="";
+                //파일저장
+                if(imgFile!= null && !imgFile.isEmpty())
+                {
+                    fileName = imgFile.getOriginalFilename();
 
-            String path = "/image/menu";
-            String realPath = request
-                                .getServletContext()
-                                .getRealPath(path);
+                    String path = "/image/menu";
+                    String realPath = request
+                                        .getServletContext()
+                                        .getRealPath(path);
 
-            System.out.println("realPath : "+realPath);
-            File pathFile = new File(realPath);
+                    System.out.println("realPath : "+realPath);
+                    File pathFile = new File(realPath);
 
-            if(!pathFile.exists())
-                pathFile.mkdirs();
+                    if(!pathFile.exists())
+                        pathFile.mkdirs();
 
-            File file = new File(realPath+File.separator+fileName);
-            
-            //파일을 폴더에 저장
-            imgFile.transferTo(file);
-        
+                    File file = new File(realPath+File.separator+fileName);
+                    
+                    //파일을 폴더에 저장
+                    imgFile.transferTo(file);
+                    
+                    fileNames.add(fileName);
+                
+                }
+       
         }
-        
-        menu.setRegMemberId(160L);
-        menu.setCategoryId(1L);
-        menu.setImg(fileName);
+            menu.setRegMemberId(160L);
+            menu.setCategoryId(1L);
+            //menu.setImg(fileName);
 
-        service.add(menu);
-        System.out.println("imgFile"+imgFile);
-        
-        System.out.println(menu);
+            int affected = service.add(menu, fileNames);
+
+            System.out.println("=====================");
+             System.out.printf("imgFlies:%s\n",imgFiles);
+             System.out.printf("affected:%d\n",affected);
+
+             System.out.println(menu);
 
         return "redirect:list";
     }
+
 
     @GetMapping("reg")
     public String reg() {

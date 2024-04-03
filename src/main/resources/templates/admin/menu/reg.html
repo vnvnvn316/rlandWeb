@@ -49,6 +49,19 @@
             transform: translateX(0px);
         }
 
+        .img-label.valid {
+            background-color: greenyellow;
+        }
+
+        .img-label.invalid {
+            background-color: red;
+        }
+
+        .img-label.invalid::after {
+           content: "파일형식이 아닙니다.";
+           display: inline-block;
+        }
+
     </style>
     <script src="/js/admin/reg.js" defer></script>
 </head>

@@ -21,7 +21,7 @@ public interface MenuService {
     
     Menu getById(Long id);
 
-    int add(Menu menu);
+    int add(Menu menu, List<String> fileNames);
 
     
 
