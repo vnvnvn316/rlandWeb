@@ -1,6 +1,3 @@
-// imgInput.oninput = (e) => {
-//     alert("dd");
-// }
 function InputFileList(input){
     this.input = input;
 }
@@ -17,7 +14,9 @@ InputFileList.prototype = {
         dt.items.add(file);
 
         this.input.files = dt.files;
-        
+
+        //console.log(this.input.files);
+
     }
 };
 
@@ -48,6 +47,9 @@ window.addEventListener("load",function(){
                     e.dataTransfer.types &&
                     e.dataTransfer.types.indexOf("files")>=0;
         
+        console.log("e.dataTransfer = " , e.dataTransfer);
+        console.log("e.dataTransfer.types = " , e.dataTransfer.types);
+
         if(valid)
             imgLabel.classList.add("valid");
         else
@@ -55,10 +57,8 @@ window.addEventListener("load",function(){
 
     };
 
-    //var fileList = new DataTransfer();
-
     imgLabel.ondrop = function(e){
-        e.stopPropagation();
+        e.stopPropagation(); //파일을 drop 했을때 페이지가 새로열리지 않도록
         e.preventDefault();
 
         var files = e.dataTransfer.files;
@@ -66,9 +66,6 @@ window.addEventListener("load",function(){
 
         new InputFileList(imgInput).add(file);
        
-        //fileList.items.add(file);
-        //imgInput.files.add(files);
-
         if(file.type.indexOf("image/")!=0){ //타입 제약
             alert("이미지만 업로드 할 수 있습니다.");
             return;
@@ -83,7 +80,6 @@ window.addEventListener("load",function(){
         var reader = new FileReader();
         
         reader.onload = function(e){
-            console.log("dd");
             var img = document.createElement("img");
             img.src = e.target.result;
             
@@ -96,13 +92,7 @@ window.addEventListener("load",function(){
             },5);
         };
         
-        //imgInput.files = fileList.files;
-
-        //console.log(imgInput.files);
-
         reader.readAsDataURL(file);
-
-
 
     };
 
@@ -139,7 +129,6 @@ window.addEventListener("load",function(){
         
         reader.readAsDataURL(file);
 
-        console.log("hello");
     };
 
 });
