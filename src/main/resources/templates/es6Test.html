@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        console.log("========================================================");
+        console.log("번외 : apply, call, bind 메소드의 용법과 차이 (es5 내용)");
+        {
+            let exam = {
+                kor : 10,
+                eng : 20,
+                math : 30
+            }
+            //자바스크립트에서 function을 호출하면서 객체를 전달하는 방법을 제공한다.
+            function total(){
+                return this.kor+this.eng+this.math;
+            }
+            //이렇게 호출된 total에서의 this는 window 객체가 된다.
+            console.log("total ", total());
+            //total을 호출하면서 this로 사용 할 객체를 전달할 수 있다.
+            //방법 1 : apply를 사용하는 방법
+            console.log("apply total " ,total.apply(exam));
+            //방법 2: call을 사용하는 방법
+            console.log("call total ", total.call(exam));
+            //방법 3: bind를 사용하는 방법
+            //위의 1,2 방법은 내가 함수를 호출하는 입장일 때이지만 호출을 부탁(위임)하는 경우에 객체를 지정하고 싶다면
+            //예를 들어 내가 callback 함수를 위임하는 경우
+            let food = {
+                name : "짜장면",
+                completeFood(){
+                    console.log(this.name, " 나왔으니까 서빙해");
+                }
+            }
+
+            let btn = food.completeFood.bind(food);
+            //호출자는 어떻게 호출하지? 그냥 위임받은 함수를 참조하는 변수를 이용해서 call하겠지?
+            btn();
+
+
+        }
+        console.log("========================================================");
+        console.log("Arrow function (Lambda expression) #4 콜백함수에는 이거 써 제발(물론 예외있음 ㅎㅎ;)");
+        {
+            let exam = {
+                kor:10,
+                eng:20,
+                total: () => {
+                    return this.kor + this.eng;
+                },
+                delayedPrint() {
+                    //exam.dalayedPrint() 이 때는 this가 exam이다
+                    //3초 뒤 다음 callback 호출되면 this.kor 가 undefined 가 나온다.
+                    //그 이유는 함수만 호출 했기 때문에 who? 넘겨 받은 친구가 (setTimeout)
+                    // setTimeout(function () {
+                    //     console.log("delayed ....call ", this.kor, this);
+                    // }, 3000);
+                    // // 그 대안으로 bind() 메소드를 사용할 수 있지만
+                    // setTimeout(function () {
+                    //     console.log("delayed ....call ", this.kor, this)
+                    // }.bind(this), 3000);
+                    // 그 보다는 Arrow Function을 사용하면 깔끔하게 처리할 수 있다.
+                    setTimeout(()=> {
+                        console.log("delayed ....call ", this.kor, this)
+                    }, 3000);
+                }
+            }
+            exam.delayedPrint();
+            console.log("이 친구 결과는 맨밑에 3초뒤에 나올 것")
+        }
+        console.log("========================================================");
+        console.log("Arrow function (Lambda expression) #3");
+        {
+            function add1(a,b){
+                console.log("add arguments length : ", arguments.length); // 나머지 값도 처리 할 수 있다.
+                return a+b;
+            }
+            let add2 = (a, b, ...args)=>{
+                console.log("rest arguments length : ", args.length);   //이렇게 하면 Arrow Function으로도 나머지 값을 처리할 수 있다.
+                return a+b;                                             //메소드가 아닌 함수의 경우 Arrow Function을 사용 한다.
+            }
+            console.log("add1(3,4,5,6,7) ", add1(3,4,5,6,7));
+            console.log("=================================");
+            console.log("add2(3,4,5,6,7) ", add2(3,4,5,6,7));
+        }
+
+        console.log("========================================================");
+        console.log("Arrow function (Lambda expression) #2");
+        {
+            const math = 40;
+            let exam = {
+                kor:10,
+                eng:20,
+                total:()=> {
+                    return this.kor+this.eng+this.math ;
+                }
+            }
+            // this가 있다는 말은 total() 메소드를 호출할 때 exam을 this로 받는다는 것을 말하는 것이다.
+            // Arrow Function 은 그것(exam)을 안 받는다, 아니 못 받는다.
+            // 따라서 total() 메소드의 연산은 undefined+undefined 가 되어서 NaN이 된다.
+            console.log(exam.total()); //결과값 : NaN
+        }
+        console.log("========================================================");
+        console.log("Arrow function (Lambda expression) #1");
+        {
+            {
+                let arr = [8, 3, 1, 52, 67, 30, 12];
+                arr.sort((a, b) => a - b);
+                console.log(arr);
+                arr.sort((a, b) => b - a);
+                console.log(arr);
+            }
+
+            {
+                let arr = [[8, 3], [1, 52], [67, 30], [12,30,60]];
+                arr.sort((a, b) => a[0] - b[0]);
+                console.log(arr);
+                arr.sort((a, b) => b[0] - a[0]);
+                console.log(arr);
+            }
+            // 차이점:
+            // *****1. this, super 가 없다. (생성자 또는 멤버 메소드로 사용될 수 없다.)*****
+            //      2. arguments 콜렉션이 없다. (코드를 나누는 역할자로 사용하지 않는다.)
+            //      3. new.target이 없다. new 연산자로 생성 할 수 없다.
+            let exam = {
+                kor:10,
+                eng:20,
+                total:()=> {
+                    return exam.kor+exam.eng ;
+                }
+            }
+            // this가 있다는 말은 total() 메소드를 호출할 때 exam을 this로 받는다는 것을 말하는 것이다.
+            // Arrow Function 은 그것(exam)을 안 받는다, 아니 못 받는다.
+            // 따라서 total() 메소드의 연산은 undefined+undefined 가 되어서 NaN이 된다.
+            console.log(exam.total()); //결과값 : NaN
+        }
+
+        console.log("========================================================");
+        console.log("Function 기본값 #2");
+        {
+            function getCount(){
+                return 3;
+            }
+            function add(x, y=10,z=getCount() /*함수를 넣을수도 있다*/, a= z+1 /*기본값을 대입할 수도 있다*/){
+                console.log("arguments 길이 ",  arguments.length);
+                console.log(x,  ' , ',  y,  ' , ',  z,  ' , ',  a);
+
+                console.log(
+                    "인자 값을 바꾸기 전 : ",
+                    x==arguments[0],
+                    x===arguments[0],
+                    y==arguments[1],
+                    y===arguments[1]
+                )
+                x= 50;
+                y=60;
+                console.log(
+                    "인자 값을 바꾼 후 : ",
+                    x==arguments[0],
+                    x===arguments[0],
+                    y==arguments[1],
+                    y===arguments[1]
+                )//javascript 는 모두 참조를 하기 때문
+            }                           //결과값
+            add(10);                //길이 : 1 /10 10
+            // add(10,20);          //길이 : 2 /10 20
+            // add(undefined);         //길이 : 1  /undefined, 10
+        }
+
+        console.log("========================================================");
+        console.log("Function 기본값 #1");
+        {
+            function add(x, y=10, z){
+                console.log(x,  " , ",  y,  " , ",  z);
+                return x+y+z;
+            }
+
+            console.log(add(20, null, 40));  //null은 y값을 먹고 들어감
+            console.log("================================");
+            console.log(add(20, undefined, 40)); //undifined는 y=10 유지
+        }
+
+        console.log("========================================================");
+        console.log("Rest Parameters & Spread Operator");
+        {
+            function sum (n1, n2, ...args) {
+                let result = 0;
+
+                console.log(args);
+                for(let arg of args)
+                    console.log(arg);
+                return n1+n2;
+            }
+            console.log('sum1: ', sum(4,5));
+            console.log('sum2: ', sum(4,5,1,2,3,4,5,6,7));
+
+            let kors= [20,30,40];
+            console.log('sum3: ', sum(kors[0], kors[1]));
+            console.log('sum4: ', sum(...kors));
+
+            console.log("================================");
+            let arr1 = [2,3,4];
+            let arr2 = [6,5, ...arr1];
+            console.log("arr2: ", arr2);
+
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #5-4 Array Destructuring");
+        {
+            let x = 10;
+            let y = 20;
+            console.log('before',x,y);
+            [x,y]=[y,x];
+            console.log('after',x,y); //swap가능
+            console.log('-----------------------');
+            console.log('before',x,y);
+            [x,y,z=100]=[y,x];
+            console.log('after',x,y);
+            console.log('after-z ',z);
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #5-3 Array Destructuring");
+        {
+            let arr = [10, 20, 50]
+            let [kor1, , kor3] =arr;
+            arr[0] = 60;
+            console.log('아직 60이 대입 안됨', kor1,kor3);
+            [kor1, ,kor3] = arr;
+            console.log('대입완료',kor1, kor3);
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #5-2 Array Destructuring");
+        {
+
+            let [kor1, kor2] = [10, 20, 50]; //배열 또한 변수가 없어도 알아서 위치에 맞는 값 대입
+            let [eng1,, eng3] = [10, 20, 50]; //중간을 빼먹고 싶으면 비워두면 된다.
+
+            console.log(kor1, kor2);
+            console.log(eng1, eng3);
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #5-1 Array Destructuring");
+        {
+            //let kor1, kor2, kor3 = [10,20,50];
+            // 결과값 : undifined  undifined  [10, 20, 30]
+
+            //결과값 : 10, 20, {name:'메롱', score:50}
+            let [kor1, kor2, kor3] = [10, 20, {name:'메롱', score:50}];
+
+            console.log(kor1, kor2, kor3);
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #4-6 Object Destructuring");
+        {
+            let exam = {kor:20, eng:30, math:40, student:{id:1, name:'홍길동'}};
+            //let name = exam.student.name;
+            let {kor, student:{name}} = exam; //오브젝트 안의 오브젝트에서 값 뽀개서 뽑아내기
+
+            console.log(kor, name);
+
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #4-5 Object Destructuring");
+        {
+            function  print(exam) {
+                let {kor, eng:english,com=90} = exam;
+
+                let total = kor + english+com;
+                console.log(kor, english, `com:${com}`,total);
+            }
+            // print({kor:10, eng:30, math:40});
+            let exam1 = {kor:10, eng:30, math:40};
+            let {kor, eng} = exam1;
+            exam1.kor++;
+            exam1.eng+=2;
+            console.log('변하지 않음 ', kor, eng); //변하지 않음
+            ({kor,eng}=exam1) //다시 담아줘야 한다. ()와 함께
+            console.log('다시 담아줘야 한다 ', kor,eng);
+
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #4-4 Object Destructuring");
+        {
+            function  print(exam) {
+                let {kor, eng:english,com=90} = exam; //새로운 변수 대입 가능
+
+                let total = kor + english+com;
+                console.log(kor, english, `com:${com}`,total);
+            }
+            print({kor:10, eng:30, math:40});
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #4-3 Object Destructuring");
+        {
+            function  print(exam) {
+                let {kor, eng:english} = exam; //받은 매개변수가 없어도 가능
+
+                let total = kor + english;
+                console.log(kor, english, total);
+            }
+            print({kor:10, eng:30, math:40});
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #4-2 Object Destructuring");
+        {
+            function  print(exam) {
+                let {kor, eng:english, math} = exam; //변수명 변경 가능
+
+                let total = kor + english + math;
+                console.log(kor, english, total);
+            }
+            print({kor:10, eng:30, math:40});
+        }
+        console.log("========================================================");
+        console.log("Advanced JSON #4-1 Object Destructuring");
+        {
+            function  print(exam) {
+            // function  print({kor, eng, math}) { //이것도 가능 #1의 기능을 한번에 하지만 난 헷갈려
+                // 낱개로 뽀개기 (Destructuring)
+                // let kor = exam.kor;
+                // let eng = exam.eng;
+                // let math = exam.math;
+
+                let {kor, eng, math} = exam;  //뽀개기 #1
+
+                let total = kor + eng + math;
+                console.log(kor, eng, total);
+            }
+            print({kor:10, eng:30, math:40});
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #3 Computed Property");
+        {
+            for(let i = 0; i< 5; i++) {
+                let col = "kor";
+                let eng = 40;
+                let math = 100;
+
+                let exam2 = {
+                    [col+i]: 20+i*10,
+                    eng,
+                    math,
+                    total() {
+                        return this.kor + this.eng + this.math;
+                    }
+                };
+
+                console.log(exam2, exam2.total());
+            }
+        }
+
+
+        console.log("========================================================");
+        console.log("Advanced JSON #2");
+        {
+            let kor = 30;
+            let eng = 40;
+            let math = 100;
+
+            let exam1 = {
+                korScore : kor,
+                engScore : eng,
+                mathScore : math
+            };
+            console.log(exam1);
+
+            let exam2={
+                kor,
+                eng,
+                math,
+            total(){
+                    return this.kor+this.eng+this.math;
+            }};
+
+            console.log(exam2, exam2.total());
+        }
+
+        console.log("========================================================");
+        console.log("Advanced JSON #1");
+        {
+            let kor = 30;
+            let eng = 40;
+            let math = 100;
+
+            let exam1 = {
+                korScore : kor,
+                engScore : eng,
+                mathScore : math
+            };
+            console.log(exam1);
+
+            let exam2={kor, eng, math};
+            console.log(exam2);
+        }
+    </script>
+</head>
+
+<body>
+    
+</body>
+</html>
