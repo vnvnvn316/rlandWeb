@@ -62,7 +62,7 @@
             // 위에 setTimeout이 3초 뒤 호출하는 모양은 어떤 모양인가?
             // 1. f1(); // this->window
             // 2. exam.f1(); // 이렇게 호출하면 this->exam
-            // 3. f1().apply(exam); // this->exam 
+            // 3. f1().apply(exam); // this->exam //exam.delayedPrint().apply(exam);
             
         }
     };
