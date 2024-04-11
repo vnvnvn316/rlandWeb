@@ -1,7 +1,91 @@
 //promise //성공, 실패에 대한 이벤트 처리로직을 분리하게 해주는 객체
 {
+    
+
+    {
+        class MenuRepository {
+            
+            findAllPromise(){
+                return fetch("/api/menus");
+
+                // return new Promise((resolve)=>{
+                //     const xhr = new XMLHttpRequest();
+                //     xhr.withCredentials = true;
+
+                //     xhr.onload = function(){
+                //         const list = JSON.parse(this.responseText);
+                //         resolve(list);
+                //     };
+
+                //     const url = `http://localhost:8080/api/menus`;
+                //     const method = "GET";
+            
+                //     xhr.open(method,url);
+                
+                //     xhr.send();
+                // });
+            }
+
+            // findAll(resolve){
+            //     const xhr = new XMLHttpRequest();
+            //     xhr.withCredentials = true;
+
+            //     xhr.onload = function(){
+            //         const list = JSON.parse(this.responseText);
+            //         resolve(list);
+            //     };
+
+            //     const url = `http://localhost:8080/api/menus`;
+            //     const method = "GET";
+        
+            //     xhr.open(method,url);
+            
+            //     xhr.send();
+            // }
+
+        }
+
+        async function printList(){
+            let repository = new MenuRepository();
+            //let list = await repository.findAllPromise();
+            let response = await repository.findAllPromise();
+            let list = await response.json();
+            console.log("printList888 : ",list);
+        }
+
+        printList();
+
+
+        let repository = new MenuRepository();
+        
+        let promise = repository.findAllPromise();
+
+        promise
+        //fetch 함수가 반환할 때는 response객체를 통해서 상태값도 같이 전달한다.
+        .then(response=>response.json()) // 이 부분은 fetch 함수를 사용한 경우 사용
+        .then((list)=>{
+            return list[0];
+        })
+        .then((menu)=>{
+            return menu.korName;
+        })
+        .then(korName=>{
+            console.log(korName);
+        });
+
+        promise
+        .then((list)=>list[0])
+        .then((menu)=>menu.korName)
+        .then(korName=>console.log(korName));
+        
+        // repository.findAll((list)=>{
+        //     console.log(list);
+        // });
+
+    }
 
     // 비동기 처리 함수 4 : 서비스 함수 예
+    //http://localhost:8080/js/es6_2.html
     class MenuRepository{
         findAll(resolve){
             const xhr = new XMLHttpRequest();
@@ -27,7 +111,7 @@
         console.log(list);
     });
 
-    
+
     // 비동기 처리 함수2 : promise 방식의 비동기 처리함수
     function delayedPrint1(value){
         
