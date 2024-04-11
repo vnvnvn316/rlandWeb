@@ -137,6 +137,7 @@ window.addEventListener("load", function(){
 
         var url =`http://localhost:8080/api/menus?q=${q}&p=1`;
 
+        //ajax 방식
         request(url, function(list){
             bind(list);
             console.log("검색어 목록 재로드");
@@ -147,6 +148,7 @@ window.addEventListener("load", function(){
     function request(url, callback, method) {
 
         method = method || "GET";
+        
         
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
