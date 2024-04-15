@@ -19,10 +19,9 @@ export default class Boy{
             //source image
             ,106, 296, 106,149,
             //destination image
-            150,150,200,200
+            150,150,106,149
         );
         
-
     }
 
     update(){
