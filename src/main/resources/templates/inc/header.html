@@ -13,8 +13,11 @@
                     <li sec:authorize="isAnonymous()"><a class="icon icon-person icon-color:base-0" href="/user/signin">로그인</a></li>
                     <!-- 인증되었을 경우만 나옴 -->
                     <li sec:authorize="isAuthenticated()">
+                        <!-- <span sec:authentication="name">ddd</span>
+                        <span th:text="${#authentication.name}">ddd</span> -->
+                        <span sec:authentication="principal.email">ddd</span>
+                        <span sec:authentication="email">ddd</span>
                         <span th:text="${#authentication.name}">ddd</span>
-                        <span sec:authentication="name">ddd</span>
                         <a class="icon icon-sign-out icon-color:base-0" href="/user/logout">로그아웃</a>
                     </li>
                 </ul>

@@ -3,12 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.co.rland.web.repository.MemberRepository">
+<mapper namespace="kr.co.rland.web.repository.MemberRoleRepository">
 	
   <select id="findAllByMemberId" resultType="MemberRole">
     	select 
     		*
-    	from Member_role
+    	from member_role
         where member_id=#{memberId}
   </select>
 
