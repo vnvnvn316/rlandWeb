@@ -67,6 +67,7 @@
                             <div class="like-block d:flex justify-content:flex-end">
                                 <a class="icon icon-heart-fill icon-color:base-4" href="">좋아요</a>
                                 <span class="font-weight:bold ml:1" th:text="${m.likeCount}">2</span>
+                                <span class="font-weight:bold ml:1" th:text="${m.like}">0</span>
                             </div>
                             <div sec:authorize="hasRole('ADMIN')">
                                 <button>삭제</button>

@@ -20,5 +20,6 @@ public class MenuView {
 	  private String img;
       private Date regDate;
 	  private long categoryId;
-	  private int likeCount; 
+	  private int likeCount;
+	  private boolean like;
 }
