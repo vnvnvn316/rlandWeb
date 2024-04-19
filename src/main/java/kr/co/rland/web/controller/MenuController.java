@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import kr.co.rland.web.config.security.WebUserDetails;
 import kr.co.rland.web.entity.Category;
 import kr.co.rland.web.entity.Menu;
 import kr.co.rland.web.entity.MenuView;
@@ -42,23 +44,29 @@ public class MenuController {
             @CookieValue(required=false) String menusCookie,
             @RequestParam(name="q", required=false) String query,
             @RequestParam(name="c", required=false) Long categoryId,
-            @RequestParam(name="p", required=false, defaultValue="1") Integer page
+            @RequestParam(name="p", required=false, defaultValue="1") Integer page,
+            @AuthenticationPrincipal WebUserDetails userDetails
+            
             ){
         
         List<MenuView> menus = new ArrayList<>();
         
         int count =0;
 
+        Long memberId=null;
+        if(userDetails!=null)
+            memberId = userDetails.getId();
+
         if(categoryId!=null){
-            menus=service.getList(page,categoryId);
+            menus=service.getList(memberId, page,categoryId);
             count = service.getCount(categoryId);
         }
         else if (query!=null){
-            menus=service.getList(page,query);
+            menus=service.getList(memberId, page,query);
             count = service.getCount(query);
         }
         else {
-            menus=service.getList(page);
+            menus=service.getList(memberId, page);
             count = service.getCount();
         }
 

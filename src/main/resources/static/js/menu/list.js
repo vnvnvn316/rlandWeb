@@ -80,31 +80,48 @@ window.addEventListener("load", function(){
     var menuContent = menuCardList.getElementsByClassName("content")[0];
     
     menuContent.onclick = function(e) {
+
+        let isValid =e.target.classList.contains("btn-cart") 
+                    || e.target.classList.contains("icon-heart") 
+                    || e.target.classList.contains("icon-heart-fill"); 
         
-        if(!e.target.classList.contains("btn-cart"))
+        if(!isValid)
             return;
-
-        e.preventDefault();
         
-        var item={};
+        console.log("valid");
 
-        item.id=e.target.dataset.id;
-        item.korName=e.target.dataset.korName;
-        item.engName=e.target.dataset.engName;
-        item.price=e.target.dataset.price;
-        item.regDate=e.target.dataset.regDate;
-        item.img=e.target.dataset.img;
-        item.categoryId=e.target.dataset.categoryId;
+        //icon-heart
+        {
+            // api/menu-likes , POST
+            
+        
+        }
 
-        console.log(item);
-        // cookie.remove("menus");
-        // cookie.add("",)
-        cookie.addItem("menus", item);
-        //cookie.set();
-        cookie.save();
-        e.preventDefault();
 
-        // alert("dd");
+        //btn-cart handler
+        {
+            var item={};
+
+            item.id=e.target.dataset.id;
+            item.korName=e.target.dataset.korName;
+            item.engName=e.target.dataset.engName;
+            item.price=e.target.dataset.price;
+            item.regDate=e.target.dataset.regDate;
+            item.img=e.target.dataset.img;
+            item.categoryId=e.target.dataset.categoryId;
+    
+            console.log(item);
+            // cookie.remove("menus");
+            // cookie.add("",)
+            cookie.addItem("menus", item);
+            //cookie.set();
+            cookie.save();
+            e.preventDefault();
+    
+            e.preventDefault();
+            // alert("dd");
+        }
+       
 
     };
 
