@@ -20,9 +20,12 @@ public class MenuLikeController {
     @PostMapping
     public MenuLike add(
         @RequestBody MenuLike MenuLike){
-            
+        
+        MenuLike newOne = service.add(MenuLike);
+
         System.out.println(MenuLike);
-        return MenuLike;
+        
+        return newOne;
     }
 
     @DeleteMapping

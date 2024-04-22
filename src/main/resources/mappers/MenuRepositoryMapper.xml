@@ -18,10 +18,11 @@
 				m.reg_date ,
 				m.category_id ,
 				COUNT(ml.menu_id) like_count,
-				nvl(ml.member_id=#{memberId},0) `like`
+				nvl(a.member_id,0) `like`
 			FROM
 				(menu m
 				LEFT JOIN menu_like ml ON (m.id = ml.menu_id))
+				left JOIN (select menu_id, member_id from menu_like where member_id =#{memberId}) a ON m.id = a.menu_id 
 			GROUP BY m.id
 		) mv
 		<where>
