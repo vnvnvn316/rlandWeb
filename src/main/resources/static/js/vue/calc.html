@@ -5,21 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="module" src="dom.js" defer></script>
 </head>
 
 <body>
-    <section>
+    <section id="form-section">
         <h1>덧셈 계산기</h1>
         <form>
             <fieldset>
                 <legend>계산기 입력폼</legend>
                 <div>
                     <label>x:</label>
-                    <input dir="rtl" value="0">
+                    <input dir="rtl" name="x" value="0">
                     <label>y:</label>
-                    <input dir="rtl" value="0">
+                    <input dir="rtl" name="y"value="0">
                     <span>=</span>
-                    <span>0</span>
+                    <span class="result-span">0</span>
                 </div>
                 <hr>
                 <div>
