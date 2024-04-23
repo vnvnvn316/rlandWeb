@@ -2,6 +2,13 @@ const { createApp } = Vue
 
 createApp({
   data(){
-    return{}
+    return{
+        query:""
+    }
+  },
+  methods : {
+    queryClickHandler(){
+        console.log(this.query);
+    }
   }
 }).mount('main');

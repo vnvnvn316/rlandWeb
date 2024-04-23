@@ -8,7 +8,7 @@
         <link href="/css/components/menu/basket-status.css" rel="stylesheet" type="text/css">
         <link href="/css/components/menu/list.css" rel="stylesheet" type="text/css">
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <script type="module" src="/js/menu/list-vue.js"></script>
+        <script  type="module" src="/js/menu/list-vue.js" defer></script>
     </head>
     <body>
     <main layout:fragment="main">
@@ -42,8 +42,8 @@
                         <form name="searchFrm" method="get" action="list"> 
                             <fieldset>
                                 <legend class="d:none">이름 검색</legend>
-                                <input  class="query-input" type="text" placeholder="메뉴 검색" v-model="query">
-                                <button class="icon icon-find" @click.prevent="queryClickHandler">검색</button>
+                                <input  class="query-input" type="text" placeholder="메뉴 검색" value="">
+                                <button class="icon icon-find">검색</button>
                             </fieldset>
                         </form>
                         <a th:href="@{/menu/add}" style="color: aliceblue;">등록</a>
@@ -142,6 +142,9 @@
                 <dd class="ml:auto"><a href="/basket/list" class="icon icon-basket_outline icon-color:base-0 icon-size:4 icon-text-with">1</a></dd>
             </dl>
         </section>
+        <script>
+            console.log("body main end");
+        </script>
     </main>
 </body>
 </html>
