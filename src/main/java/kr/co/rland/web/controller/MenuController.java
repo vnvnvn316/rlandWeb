@@ -105,6 +105,140 @@ public class MenuController {
         return "menu/list";
     }
 
+    @GetMapping("list-vue")
+    public String listVue(
+            Model model,
+            @CookieValue(required=false) String menusCookie,
+            @RequestParam(name="q", required=false) String query,
+            @RequestParam(name="c", required=false) Long categoryId,
+            @RequestParam(name="p", required=false, defaultValue="1") Integer page,
+            @AuthenticationPrincipal WebUserDetails userDetails
+            
+            ){
+        
+        List<MenuView> menus = new ArrayList<>();
+        
+        int count =0;
+
+        Long memberId=null;
+        if(userDetails!=null)
+            memberId = userDetails.getId();
+
+        if(categoryId!=null){
+            menus=service.getList(memberId, page,categoryId);
+            count = service.getCount(categoryId);
+        }
+        else if (query!=null){
+            menus=service.getList(memberId, page,query);
+            count = service.getCount(query);
+        }
+        else {
+            menus=service.getList(memberId, page);
+            count = service.getCount();
+        }
+
+        List<Category> categorys = CategoryService.getList();
+        
+        // 장바구니 쿠키 가져오기
+        int cartTotalPrice=0;
+        int cartCount=0;
+
+        if(menusCookie!=null){
+            
+            Type listType = new TypeToken<List<Menu>>(){}.getType();
+
+            String decoded = URLDecoder.decode(menusCookie, Charset.forName("utf-8"));
+
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("MMM d, yyyy") // "2월 19, 2024"와 같은 형식에 대한 포매터 설정
+                    .create();
+
+            
+            List<Menu> cartList = gson.fromJson(decoded, listType);
+            
+            cartCount=cartList.size();
+            
+            for(Menu m : cartList)
+                cartTotalPrice += m.getPrice();
+        
+        }
+
+        model.addAttribute("menus",menus);
+        model.addAttribute("categorys",categorys);
+        model.addAttribute("count",count);
+        model.addAttribute("cartCount", cartCount);
+        model.addAttribute("cartTotalPrice", cartTotalPrice);
+
+        return "menu/list-vue";
+    }
+
+    @GetMapping("list-react")
+    public String listReact(
+            Model model,
+            @CookieValue(required=false) String menusCookie,
+            @RequestParam(name="q", required=false) String query,
+            @RequestParam(name="c", required=false) Long categoryId,
+            @RequestParam(name="p", required=false, defaultValue="1") Integer page,
+            @AuthenticationPrincipal WebUserDetails userDetails
+            
+            ){
+        
+        List<MenuView> menus = new ArrayList<>();
+        
+        int count =0;
+
+        Long memberId=null;
+        if(userDetails!=null)
+            memberId = userDetails.getId();
+
+        if(categoryId!=null){
+            menus=service.getList(memberId, page,categoryId);
+            count = service.getCount(categoryId);
+        }
+        else if (query!=null){
+            menus=service.getList(memberId, page,query);
+            count = service.getCount(query);
+        }
+        else {
+            menus=service.getList(memberId, page);
+            count = service.getCount();
+        }
+
+        List<Category> categorys = CategoryService.getList();
+        
+        // 장바구니 쿠키 가져오기
+        int cartTotalPrice=0;
+        int cartCount=0;
+
+        if(menusCookie!=null){
+            
+            Type listType = new TypeToken<List<Menu>>(){}.getType();
+
+            String decoded = URLDecoder.decode(menusCookie, Charset.forName("utf-8"));
+
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("MMM d, yyyy") // "2월 19, 2024"와 같은 형식에 대한 포매터 설정
+                    .create();
+
+            
+            List<Menu> cartList = gson.fromJson(decoded, listType);
+            
+            cartCount=cartList.size();
+            
+            for(Menu m : cartList)
+                cartTotalPrice += m.getPrice();
+        
+        }
+
+        model.addAttribute("menus",menus);
+        model.addAttribute("categorys",categorys);
+        model.addAttribute("count",count);
+        model.addAttribute("cartCount", cartCount);
+        model.addAttribute("cartTotalPrice", cartTotalPrice);
+
+        return "menu/list-react";
+    }
+
 
     @GetMapping("detail")
     public String detail(Model model,@RequestParam("id") Long id){

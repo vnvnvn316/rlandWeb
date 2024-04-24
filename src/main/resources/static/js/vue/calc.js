@@ -8,7 +8,6 @@ export default {
     },
     methods : {
       calcSubmitHander(){
-        
         this.result = this.x + this.y;
       }
     }, template :`
