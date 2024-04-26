@@ -52,13 +52,15 @@
                             <h2 class="heading-2 font-weight:normal color:base-5" v-text="m.engName">Cafe Latte</h2>
                             <div class="price-block d:flex align-items:flex-end"><span class="font-weight:bold" v-text="m.price">4,500</span>원<span class="soldout-msg ml:auto mr:auto md:d:none">SOLD OUT</span></div>
                             <div class="img-block">
-                                <a href="detail.html?id=1">
-                                    <img src="/image/menu/8.jpg" />                                      
+                                <a :href="'detail.html?id='+ m.id">
+                                    <img :src="m.img" />                                      
                                 </a>
                             </div>
                             <div class="like-block d:flex justify-content:flex-end">
                                 <a class="icon icon-heart icon-color:base-4"                                
-                                 href="">좋아요</a>
+                                    href=""
+                                    :class="{'icon-heart-fill' : m.like}"
+                                >좋아요</a>
                                 <span class="font-weight:bold ml:1" v-text="m.likeCount">2</span>                                
                             </div>
                             <div>
