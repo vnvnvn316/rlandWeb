@@ -14,6 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,6 +34,12 @@ public class WebSecurityConfig {
 
   @Autowired
   private DataSource dataSource;
+
+  @Autowired
+  private WebOAuth2UserDetailsService oauth2UserDetailsService;
+
+  @Autowired
+  private LoginSuccessHandler loginSuccessHandler;
 
   @Bean
   public PasswordEncoder passwordEncoder (){
@@ -51,8 +61,15 @@ public class WebSecurityConfig {
 			.formLogin((form) -> form
 				.loginPage("/user/signin")
         //.successHandler(new AuthSuccessHandler())
+        .successHandler(loginSuccessHandler)
 				.permitAll()
+        
 			)
+      .oauth2Login(config->config
+        .userInfoEndpoint(userInf->userInf
+          .userService(oauth2UserDetailsService)) //구글의 로그인정보를 token으로 받는 것
+        .successHandler(loginSuccessHandler)
+        )
       .logout((logout) -> logout
 				.logoutUrl("/user/logout")
         .logoutSuccessUrl("/index")

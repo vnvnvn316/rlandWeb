@@ -116,6 +116,7 @@ window.addEventListener("load", function(){
             cookie.addItem("menus", item);
             //cookie.set();
             cookie.save();
+            
             e.preventDefault();
     
             e.preventDefault();
