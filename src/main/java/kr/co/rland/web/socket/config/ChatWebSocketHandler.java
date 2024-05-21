@@ -8,6 +8,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.google.gson.Gson;
+
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     List<WebSocketSession> users = new ArrayList<>();
@@ -22,9 +24,19 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println(message.getPayload());
+        String msg = message.getPayload();
+        WSData data = new Gson().fromJson(msg, WSData.class);
+        data.getType();
+        System.out.println();
+
+        //클라이언트에 대한 정보가 누적될 수 있는 공간 필요
+        //1. 세션데이터 2. 클라이언트 데이터 -> WSUser
+
+        //1.세션 데이터
         for(WebSocketSession s : users)
             s.sendMessage(new TextMessage(message.getPayload()))
+        
+        
 ;        
     }
 
