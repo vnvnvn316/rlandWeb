@@ -38,6 +38,11 @@ public class MenuController {
     @Autowired
     private CategoryService CategoryService;
 
+    public String test(){
+        
+        return "test";        
+    }
+
     @GetMapping("list")
     public String list(
             Model model,
