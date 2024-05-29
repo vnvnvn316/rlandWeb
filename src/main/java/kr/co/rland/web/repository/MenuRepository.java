@@ -3,6 +3,8 @@ package kr.co.rland.web.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.rland.web.entity.Menu;
 import kr.co.rland.web.entity.MenuView;
@@ -12,7 +14,9 @@ public interface MenuRepository {
 
     List<MenuView> findAll(Long memberId, Long categoryId, String query, int offset, int size);
 
+    //@Transactional(propagation = Propagation.MANDATORY)
     Menu findById(long id);
+
     List<Menu> findAllByName(String name);
     void deleteById(long id);
 

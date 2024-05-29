@@ -23,7 +23,8 @@ public interface MenuService {
 
     int add(Menu menu, List<String> fileNames);
 
+    void test();
+
+    void test2();
     
-
-
 }

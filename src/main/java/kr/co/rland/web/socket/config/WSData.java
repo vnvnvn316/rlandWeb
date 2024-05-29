@@ -1,7 +1,8 @@
 package kr.co.rland.web.socket.config;
 
-import groovy.transform.builder.Builder;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WSData { //websocketdata
     private int type;
+    private String username;
     private String content;
 }

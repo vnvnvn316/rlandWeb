@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,9 +39,22 @@ public class MenuController {
     @Autowired
     private CategoryService CategoryService;
 
+    @GetMapping("test")
+    @ResponseBody
     public String test(){
         
+        service.test();
+
         return "test";        
+    }
+
+    @GetMapping("test2")
+    @ResponseBody
+    public String test2(){
+        
+        service.test2();
+        
+        return "10초 후에 보이나?";        
     }
 
     @GetMapping("list")
